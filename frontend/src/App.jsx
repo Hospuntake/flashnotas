@@ -233,7 +233,7 @@ export default function App() {
       const formData = new FormData();
       formData.append("pdf", file);
       const apiBase = import.meta.env.VITE_API_URL || ""; 
-      const res = await fetch("${apiBase}/api/analyze", { method: "POST", body: formData });
+      const res = await fetch(`${apiBase}/api/analyze`, { method: "POST", body: formData });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error al analizar el documento");
       setTopics(data.topics);
@@ -270,7 +270,7 @@ export default function App() {
       if (existingQuestions.length > 0) formData.append("existingQuestions", JSON.stringify(existingQuestions));
 
       const apiBase = import.meta.env.VITE_API_URL || "";
-      const res = await fetch("${apiBase}/api/generate", { method: "POST", body: formData });
+      const res = await fetch(`${apiBase}/api/generate`, { method: "POST", body: formData });
       timers.forEach(clearTimeout); setLoadingStep(3);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error del servidor");
