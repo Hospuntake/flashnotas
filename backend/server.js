@@ -22,8 +22,16 @@ const upload = multer({
   },
 });
 
-app.use(cors({ origin: "http://localhost:5173" }));
-app.use(express.json());
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",")
+  : ["http://localhost:5173"];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) callback(null, true);
+    else callback(new Error("Not allowed by CORS"));
+  }
+}));app.use(express.json());
 
 app.get("/api/health", (req, res) => {
   res.json({ ok: true, groq: !!GROQ_API_KEY });
